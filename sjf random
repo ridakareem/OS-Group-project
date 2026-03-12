@@ -8,20 +8,28 @@ types = {
     "withdrawal":3,
     "transfer":5
 }
+
 for i in range(30):
     ttype = random.choice(list(types.keys()))
-    arrival = random.randint(0,20)
+    arrival = random.randint(0,50)
     burst = types[ttype]
 
     transactions.append({
-        "id":i,
-        "arrival":arrival,
-        "burst":burst
+        "id": i+1,
+        "type": ttype,
+        "arrival": arrival,
+        "burst": burst
     })
+
+print("\nGenerated Transactions")
+print("ID\tType\t\tArrival\tBurst")
+for t in transactions:
+    print(f"{t['id']}\t{t['type']}\t\t{t['arrival']}\t{t['burst']}")
 
 time = 0
 completed = []
 ready = []
+response_times = []
 
 while transactions or ready:
 
@@ -39,13 +47,16 @@ while transactions or ready:
 
         time += job["burst"]
 
-        completed.append(response)
+        completed.append(job["id"])
+        response_times.append(response)
+
 
     else:
         time += 1
 
-avg_response = sum(completed)/len(completed)
-throughput = len(completed)/time
+avg_response = sum(response_times)/len(response_times)
+throughput = len(response_times)/time
 
-print("Average Response:",avg_response)
-print("Throughput:",throughput)
+#print("\nExecution Order:", completed)
+print("Average Response Time:", avg_response)
+print("Throughput:", throughput)
