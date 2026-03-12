@@ -1,0 +1,51 @@
+import random
+
+transactions = []
+
+types = {
+    "balance":1,
+    "statement":2,
+    "withdrawal":3,
+    "transfer":5
+}
+for i in range(30):
+    ttype = random.choice(list(types.keys()))
+    arrival = random.randint(0,20)
+    burst = types[ttype]
+
+    transactions.append({
+        "id":i,
+        "arrival":arrival,
+        "burst":burst
+    })
+
+time = 0
+completed = []
+ready = []
+
+while transactions or ready:
+
+    for t in transactions[:]:
+        if t["arrival"] <= time:
+            ready.append(t)
+            transactions.remove(t)
+
+    if ready:
+        ready.sort(key=lambda x: x["burst"])
+        job = ready.pop(0)
+
+        start = time
+        response = start - job["arrival"]
+
+        time += job["burst"]
+
+        completed.append(response)
+
+    else:
+        time += 1
+
+avg_response = sum(completed)/len(completed)
+throughput = len(completed)/time
+
+print("Average Response:",avg_response)
+print("Throughput:",throughput)
