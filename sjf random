@@ -57,6 +57,6 @@ while transactions or ready:
 avg_response = sum(response_times)/len(response_times)
 throughput = len(response_times)/time
 
-#print("\nExecution Order:", completed)
+print("\nExecution Order:", completed)
 print("Average Response Time:", avg_response)
 print("Throughput:", throughput)
